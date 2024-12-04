@@ -23,7 +23,7 @@ from bridge.context import ContextType
 from plugins import *
 
 
-from plugins.taskscheduler.tools import WrappedChannelTools
+from .tools import WrappedChannelTools
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(current_dir, "tasks.db")
