@@ -1,0 +1,11 @@
+tasks.db
+config.json
+__pycache__/
+.venv/
+.vscode/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyj
