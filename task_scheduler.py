@@ -37,9 +37,14 @@ class CheckedThreadPoolExecutor(ThreadPoolExecutor):
         return super()._do_submit_job(job, run_times)
     
     def _check_conditions(self, job):
+        # 单例的
+        if not plugin_manager.PluginManager().pconf['plugins']['TaskScheduler']['enabled']:
+            return False
+
         msg:ChatMessage = job.args[3]
         channel = create_channel(conf().get("channel_type"))
         channel_tools = WrappedChannelTools()
+
         if isinstance(channel, ChatChannel):
             bot_user_id = channel.user_id
             if bot_user_id is None:
@@ -90,7 +95,9 @@ class TaskScheduler(Plugin):
         try:
             self.config = super().load_config()
             if not self.config:
-                self.config = self._load_config_template()
+                # 如果由插件去读 template, 不会写入全局配置, 此插件将无法正常工作
+                # 因为 task_excute 只能读取全局配置
+                raise ValueError("TaskScheduler 配置文件不存在")
 
             # self.handlers[Event.ON_HANDLE_CONTEXT] = weakref.WeakMethod(self.on_handle_context)
             self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
@@ -190,19 +197,6 @@ class TaskScheduler(Plugin):
                             event=parts[2],
                             group_name=group_name,
                         )
-
-    def _load_config_template(self):
-        logger.debug(
-            "No TaskScheduler plugin config.json, use plugins/taskscheduler/config.json.template"
-        )
-        try:
-            plugin_config_path = os.path.join(self.path, "config.json.template")
-            if os.path.exists(plugin_config_path):
-                with open(plugin_config_path, "r", encoding="utf-8") as f:
-                    plugin_conf = json.load(f)
-                    return plugin_conf
-        except Exception as e:
-            logger.exception(e)
 
     # 解析事件与组
     def parse_event_and_group(self, event_str):
