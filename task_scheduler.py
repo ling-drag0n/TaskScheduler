@@ -1,6 +1,7 @@
 # encoding:utf-8
 import hashlib
 import time
+from typing import Optional
 from apscheduler.jobstores.base import JobLookupError
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -210,7 +211,7 @@ class TaskScheduler(Plugin):
         return event, group_name
 
     # 根据周期和时间生成 Trigger
-    def get_trigger(self, cycle: str, time_str: str | None = None):
+    def get_trigger(self, cycle: str, time_str: Optional[str] = None):
         """
         根据周期和时间生成对应的 Trigger
         :param cycle: 表示周期的字符串 (例如: "每天", "2024-12-03", "cron[30 6 * * *]")
@@ -286,8 +287,8 @@ class TaskScheduler(Plugin):
         e_context: EventContext,
         event: str,
         cycle: str,
-        time_str: str | None = None,
-        group_name: str | None = None,
+        time_str: Optional[str] = None,
+        group_name: Optional[str] = None,
     ):
         reply = Reply()
         reply.type = ReplyType.TEXT
@@ -430,7 +431,7 @@ class TaskScheduler(Plugin):
 def task_execute(
     task_id: str,
     event: str,
-    group_name: str | None,
+    group_name: Optional[str],
     msg:ChatMessage,
     no_need_at
 ):
