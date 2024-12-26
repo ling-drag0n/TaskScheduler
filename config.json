@@ -1,0 +1,35 @@
+{
+  "command_prefix": "task",
+  "allow_call_other_plugins": true,
+  "custom_commands": [
+    {
+      "key_word": "早报",
+      "command_prefix": ""
+    },
+    {
+      "key_word": "珠海天气",
+      "command_prefix": ""
+    },
+    {
+      "key_word": "热搜",
+      "command_prefix": ""
+    },
+    {
+      "key_word": "摸鱼",
+      "command_prefix": ""
+    },
+    {
+      "key_word": "早报tool",
+      "command_prefix": "$tool"
+    },
+    {
+      "key_word": "点歌",
+      "command_prefix": "$"
+    },
+    {
+      "key_word": "任务列表",
+      "command_prefix": "$task "
+    }
+  ],
+  "max_workers": 20
+}
